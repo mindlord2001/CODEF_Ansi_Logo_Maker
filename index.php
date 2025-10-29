@@ -276,9 +276,7 @@
             CHARPOSX = 1;
             var mytext = document.getElementById("mytext").value;
             if (mytext.length > 0) {
-                if (workvar.headers[num].fonttype == "oUTLINE") {
-                    alert("oUTLINE FONT TYPE \nis NOT SUPPORTED YET");
-                } else if (workvar.headers[num].fonttype == "cOLOR") {
+				if (workvar.headers[num].fonttype == "cOLOR") {
                     for (i = 0; i < mytext.length; i++) {
                         if ((mytext[i].charCodeAt(0) >= 33) && (mytext[i].charCodeAt(0) < 126)) {
                             offset = workvar.headers[num].lettersoffsets[mytext[i].charCodeAt(0) - 33];
@@ -317,7 +315,7 @@
                         }
 
                     }
-                } else if (workvar.headers[num].fonttype == "bLOCK") {
+                } else if (workvar.headers[num].fonttype == "bLOCK" or workvar.headers[num].fonttype == "oUTLINE") {
                     FTCOL = 15;
                     BGCOL = 0;
                     for (i = 0; i < mytext.length; i++) {
@@ -330,6 +328,27 @@
                                 OLDPOSX = POSX;
                                 do {
                                     char = workvar.data[num][offset + n];
+									if (workvar.headers[num].fonttype == "oUTLINE") {
+							switch ($char) {
+											case "@" : $char=chr(32);	 break;
+											case "A" : $char=chr(205); break;
+											case "B" : $char=chr(196); break;
+											case "C" : $char=chr(179); break;
+											case "D" : $char=chr(186); break;
+											case "E" : $char=chr(213); break;
+											case "F" : $char=chr(187); break;
+											case "G" : $char=chr(214); break;
+											case "H" : $char=chr(191); break;
+											case "I" : $char=chr(200); break;
+											case "J" : $char=chr(190); break;
+											case "K" : $char=chr(192); break;
+											case "L" : $char=chr(189); break;
+											case "M" : $char=chr(181); break;
+											case "N" : $char=chr(199); break;
+											case "O" : $char=chr(32); break;
+											case "&" : $char=chr(13); break;
+										}
+									}
                                     if (char == "\0") {
                                         /**/
                                     } else {
