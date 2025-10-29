@@ -137,11 +137,7 @@ function text_renderer(){
         $POSY = 1;
         $CHARPOSX = 1;
 
-
-	if (@$workvar->headers[$fnum]->fonttype == "oUTLINE") {
-		echo ("oUTLINE FONT TYPE \nis NOT SUPPORTED YET");
-	}
-	else if (@$workvar->headers[$fnum]->fonttype == "cOLOR") {
+	if (@$workvar->headers[$fnum]->fonttype == "cOLOR") {
 		for ($i = 0; $i < strlen($mytxt); $i++) {
                         if ((ord($mytxt[$i]) >= 33) && (ord($mytxt[$i]) < 126)) {
                                 $offset = $workvar->headers[$fnum]->lettersoffsets[ord($mytxt[$i]) - 33];
@@ -178,7 +174,7 @@ function text_renderer(){
                         }
                 }
 	}
-	else if (@$workvar->headers[$fnum]->fonttype == "bLOCK") {
+	else if (@$workvar->headers[$fnum]->fonttype == "bLOCK" or @$workvar->headers[$fnum]->fonttype == "oUTLINE") {
 
 		$FTCOL = 15;
                 $BGCOL = 0;
@@ -191,17 +187,38 @@ function text_renderer(){
         	                        $n = 2;
                 	                $OLDPOSX = $POSX;
 					do {
-                                    		$char = $workvar->data[$fnum][$offset + $n];
-                                    		if ($char == "\0") {
-                                        		/**/
-                                    		} else {
-                                        		_PRINTCHAR($char);
-                                    		}
-                                    		$n++;
-                                	} while ($char != "\0");
-	                                $POSY = 1;
-        	                        $POSX = $OLDPOSX + $maxcharwidth + $curspacing;
-                        	        $CHARPOSX = $POSX;
+						$char = $workvar->data[$fnum][$offset + $n];
+						if (@$workvar->headers[$fnum]->fonttype == "oUTLINE") { 
+							switch ($char) {
+											case "@" : $char=chr(32);	 break;
+											case "A" : $char=chr(205); break;
+											case "B" : $char=chr(196); break;
+											case "C" : $char=chr(179); break;
+											case "D" : $char=chr(186); break;
+											case "E" : $char=chr(213); break;
+											case "F" : $char=chr(187); break;
+											case "G" : $char=chr(214); break;
+											case "H" : $char=chr(191); break;
+											case "I" : $char=chr(200); break;
+											case "J" : $char=chr(190); break;
+											case "K" : $char=chr(192); break;
+											case "L" : $char=chr(189); break;
+											case "M" : $char=chr(181); break;
+											case "N" : $char=chr(199); break;
+											case "O" : $char=chr(32); break;
+											case "&" : $char=chr(13); break;
+							}
+						}
+						if ($char == "\0") {
+								/**/
+						} else {
+								_PRINTCHAR($char);
+						}
+						$n++;
+						} while ($char != "\0");
+						$POSY = 1;
+						$POSX = $OLDPOSX + $maxcharwidth + $curspacing;
+						$CHARPOSX = $POSX;
 				}
 			}
 			else if (ord($mytxt[$i]) == 32) {
